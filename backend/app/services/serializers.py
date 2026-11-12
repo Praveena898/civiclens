@@ -32,3 +32,26 @@ def route_dict(r, length_m: float | None = None) -> dict:
         "length_m": round(float(length_m), 1) if length_m is not None else None,
         "is_simulated": r.is_simulated, "created_at": r.created_at,
     }
+
+def upload_url(rel_path: str | None) -> str | None:
+    return f"/uploads/{rel_path}" if rel_path else None
+
+
+def camera_dict(c) -> dict:
+    lat, lon = point_to_latlon(c.location)
+    return {
+        "id": c.id, "name": c.name, "latitude": lat, "longitude": lon,
+        "is_simulated": c.is_simulated, "is_active": c.is_active,
+        "has_rtsp": bool(c.rtsp_url),          # a yes/no flag, never the URL itself
+        "created_at": c.created_at,
+    }
+
+
+def observation_dict(o) -> dict:
+    return {
+        "id": o.id, "camera_id": o.camera_id, "camera_name": o.camera.name,
+        "person_count": o.person_count, "level": o.level,
+        "source_image": upload_url(o.source_image),
+        "annotated_image": upload_url(o.annotated_image),
+        "is_simulated": o.is_simulated, "observed_at": o.observed_at,
+    }

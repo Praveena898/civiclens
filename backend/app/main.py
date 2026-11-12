@@ -8,7 +8,10 @@ from sqlalchemy import text
 import app.models  # noqa: F401  (registers all tables with SQLAlchemy)
 from app.config import settings
 from app.database import Base, SessionLocal, engine
-from app.routers import dashboard, facilities, incidents, routes
+from fastapi.staticfiles import StaticFiles
+
+from app.paths import UPLOAD_DIR
+from app.routers import cameras, crowd, dashboard, facilities, incidents, routes
 
 
 @asynccontextmanager
@@ -34,8 +37,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-for module in (facilities, incidents, routes, dashboard):
+for module in (facilities, incidents, routes, dashboard, crowd, cameras):
     app.include_router(module.router)
+
+# Serves backend/uploads/* at /uploads/* (annotated crowd images, later drone images).
+app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
 
 @app.get("/api/health", tags=["System"])
