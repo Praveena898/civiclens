@@ -1,1 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --color-navy-950: #0b1524;
+  --color-navy-900: #0f1b2d;
+  --color-navy-800: #16263d;
+  --color-navy-700: #1f3552;
+}
+
+html, body, #root { height: 100%; }
+body { @apply bg-slate-100 text-slate-800 antialiased; }
+
+.leaflet-container { font-family: inherit; }
+.cl-marker { background: transparent; border: none; }
+.picking, .picking .leaflet-interactive { cursor: crosshair !important; }
